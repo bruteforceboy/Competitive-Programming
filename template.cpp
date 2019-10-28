@@ -1,8 +1,6 @@
-/*
-#pragma GCC optimize("O3")
-#pragma GCC optimize("unroll-loops")
-#pragma comment(linker, "/stack:200000000")
-*/
+// #pragma GCC optimize("O3")
+// #pragma GCC optimize("unroll-loops")
+// #pragma comment(linker,"/stack:200000000")
 #include <bits/stdc++.h>
 using namespace std;
 #define all(v) v.begin(),v.end()
@@ -20,7 +18,7 @@ signed main()
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	clock_t tickx = clock();
-	// code starts here
+	// start your code here
 	clock_t ticky = clock();
 	fprintf(stderr, "Runtime: %.4f seconds", double(ticky - tickx) / CLOCKS_PER_SEC);
 	return 0;	
