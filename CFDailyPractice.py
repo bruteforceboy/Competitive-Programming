@@ -1,5 +1,9 @@
-# @author: Ogbonna Chibuoyim
-# Codeforces Daily Practice NG
+# -----------------------------------------------------------
+# Jmokut's CF Daily Practice
+#
+# (C) 2019 Ogbonna Chibuoyim
+# Email: ogbonnachibuoyim12@gmail.com
+# -----------------------------------------------------------
 
 import urllib, json, datetime, requests, math
 from functools import cmp_to_key
