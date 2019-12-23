@@ -1,8 +1,10 @@
 # -----------------------------------------------------------
 # Jmokut's CF Daily Practice
-#
+# 
 # (C) 2019 Ogbonna Chibuoyim
 # Email: ogbonnachibuoyim12@gmail.com
+# 
+# Python 3.7.3
 # -----------------------------------------------------------
 
 import urllib, json, datetime, requests, math
@@ -17,7 +19,7 @@ def validate(date_text):
     try:
         datetime.datetime.strptime(date_text, '%d.%m.%Y %H:%M:%S')
     except ValueError:
-        raise ValueError("Incorrect data format, should be DD.MM.YYY HH:MM:SS")
+        raise ValueError("Incorrect data format, should be DD.MM.YYYY HH:MM:SS")
 
 def analyze(handle, start_time, end_time):
 	url = "https://codeforces.com/api/user.status?handle="+handle+"&from=1&count=30" # url is limited to 30 problems per day, increase if necessary.
@@ -103,9 +105,9 @@ def main():
 	print("JMOKUT'S CODEFORCES DAILY PRACTICE TOOL.\n")
 	print("Enter START datetime and END datetime to begin analyzing\n")
 
-	beg_datetime = input("Enter start datetime (DD.MM.YY HH:MM:SS) : ") # format DD.MM.YYY HH:MM:SS
+	beg_datetime = input("Enter start datetime (DD.MM.YYYY HH:MM:SS) : ") # format DD.MM.YYYY HH:MM:SS
 	validate(beg_datetime)
-	end_datetime = input("Enter ending datetime (DD.MM.YY HH:MM:SS) : ") # format DD.MM.YYY HH:MM:SS
+	end_datetime = input("Enter ending datetime (DD.MM.YYYY HH:MM:SS) : ") # format DD.MM.YYYY HH:MM:SS
 	validate(end_datetime)
 
 	# CF uses milliseconds for time analysis
