@@ -3,9 +3,14 @@
 # 
 # (C) 2019 Ogbonna Chibuoyim
 # Email: ogbonnachibuoyim12@gmail.com
-# 
-# Python 3.7.3
 # -----------------------------------------------------------
+
+# TO AVOID ERRORS 
+# Use python 3.7.3
+# pip install requests if not installed
+# Use your local time, very important!
+# Copy raw code from github
+# message me if there are still errors
 
 import urllib, json, datetime, requests, math
 from functools import cmp_to_key
@@ -31,11 +36,15 @@ def analyze(handle, start_time, end_time):
 
 	data = data["result"]
 	problem_ratings = []
+	seen_problems = set()
 	for submission in data:
 		if int(submission["creationTimeSeconds"]) >= int(start_time) and int(submission["creationTimeSeconds"]) <= end_time and submission["verdict"] == "OK":
 			if "rating" not in submission["problem"]:
 				continue
-			problem_ratings.append(int(submission["problem"]["rating"]))
+			problem_id = str(submission["problem"]["contestId"]) + str(submission["problem"]["index"])
+			if problem_id not in seen_problems:
+				seen_problems.add(problem_id)
+				problem_ratings.append(int(submission["problem"]["rating"]))
 
 	problem_ratings.sort(reverse = True)
 
@@ -101,7 +110,7 @@ def score(data, user):
 	return int((data[0] + data[1] + data[3]) / 3) - rating_dict[user]
 
 def main():
-	print("------------------------------------------------------------------------\n")
+	print("-------------------------------------------------------------------------\n")
 	print("JMOKUT'S CODEFORCES DAILY PRACTICE TOOL.\n")
 	print("Enter START datetime and END datetime to begin analyzing\n")
 
@@ -110,16 +119,23 @@ def main():
 	end_datetime = input("Enter ending datetime (DD.MM.YYYY HH:MM:SS) : ") # format DD.MM.YYYY HH:MM:SS
 	validate(end_datetime)
 
-	# CF uses milliseconds for time analysis
+	UTC_OFFSET_TIMEDELTA = datetime.datetime.utcnow() - datetime.datetime.now()
+
+	# CF uses seconds for time analysis
 	beg_obj = datetime.datetime.strptime(beg_datetime+',0',
 	                           '%d.%m.%Y %H:%M:%S,%f')
 	end_obj = datetime.datetime.strptime(end_datetime+',0',
 							   '%d.%m.%Y %H:%M:%S,%f')
 
-	beg_millisec = beg_obj.timestamp()
-	end_millisec = end_obj.timestamp()
+	# converting given local times to UTC for uniformity
+	beg_obj = beg_obj + UTC_OFFSET_TIMEDELTA
+	end_obj = end_obj + UTC_OFFSET_TIMEDELTA
 
-	users_list = ["fortmax120", "jmokut", "madlogic", "just_josh", "inheritag", "lordvidex", "tourist"] # you can extend the list as much as you want
+	epoch = datetime.datetime.utcfromtimestamp(0)
+	beg_seconds = (beg_obj - epoch).total_seconds()
+	end_seconds = (end_obj - epoch).total_seconds()
+
+	users_list = ["fortmax120", "jmokut", "madlogic", "just_josh", "inheritag", "lordvidex"] # you can extend the list as much as you want
 
 	print("\nGetting user ratings...\n")
 	for user in users_list:
@@ -131,11 +147,11 @@ def main():
 	print("Analyzing problems solved by users...\n")
 	data = []
 	for user in users_list:
-		user_data = analyze(user, beg_millisec, end_millisec)
+		user_data = analyze(user, beg_seconds, end_seconds)
 		if len(user_data) < 3:
-			print("[contestant] " + user + " solved " + str(len(user_data)) + " problems not upto 3\n");
+			print("[contestant] " + user + " solved " + str(len(user_data)) + " problem(s) not upto 3\n");
 		elif lower_than_rating(user_data, user) == 1:
-			print("[contestant] " + user + " solved easier problems than his current rating\n")
+			print("[contestant] " + user + " solved easier problem(s) than his current rating\n")
 		else:
 			data.append(Pair(user_data, user))
 
@@ -148,7 +164,7 @@ def main():
 		print("RANK " + str(rank) + " [contestant] " + user_data.second + " [score]: " + str(score(user_data.first, user_data.second)))
 		rank = rank + 1
 
-	print("\n\nDONE.")
-	print("------------------------------------------------------------------------\n")
+	print("\nDONE.")
+	print("-------------------------------------------------------------------------\n")
 
 main()
