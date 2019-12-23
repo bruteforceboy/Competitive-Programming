@@ -8,7 +8,7 @@
 # TO AVOID ERRORS 
 # Use python 3.7.3
 # pip install requests if not installed
-# Use your local time, very important!
+# Remember the program uses russian time
 # Copy raw code from github
 # message me if there are still errors
 
@@ -112,28 +112,21 @@ def score(data, user):
 def main():
 	print("-------------------------------------------------------------------------\n")
 	print("JMOKUT'S CODEFORCES DAILY PRACTICE TOOL.\n")
-	print("Enter START datetime and END datetime to begin analyzing\n")
+	print("Enter START datetime and END datetime to begin analyzing")
+	print("NOTE: Program uses RUSSIAN TIME so in Nigeria you should use -2 hours\n");
 
 	beg_datetime = input("Enter start datetime (DD.MM.YYYY HH:MM:SS) : ") # format DD.MM.YYYY HH:MM:SS
 	validate(beg_datetime)
 	end_datetime = input("Enter ending datetime (DD.MM.YYYY HH:MM:SS) : ") # format DD.MM.YYYY HH:MM:SS
 	validate(end_datetime)
 
-	UTC_OFFSET_TIMEDELTA = datetime.datetime.utcnow() - datetime.datetime.now()
-
-	# CF uses seconds for time analysis
 	beg_obj = datetime.datetime.strptime(beg_datetime+',0',
 	                           '%d.%m.%Y %H:%M:%S,%f')
 	end_obj = datetime.datetime.strptime(end_datetime+',0',
 							   '%d.%m.%Y %H:%M:%S,%f')
 
-	# converting given local times to UTC for uniformity
-	beg_obj = beg_obj + UTC_OFFSET_TIMEDELTA
-	end_obj = end_obj + UTC_OFFSET_TIMEDELTA
-
-	epoch = datetime.datetime.utcfromtimestamp(0)
-	beg_seconds = (beg_obj - epoch).total_seconds()
-	end_seconds = (end_obj - epoch).total_seconds()
+	beg_seconds = (beg_obj - datetime.datetime(1970,1,1)).total_seconds() - 10800 # since russia is utc +3
+	end_seconds = (end_obj - datetime.datetime(1970,1,1)).total_seconds() - 10800 # since russia is utc +3
 
 	users_list = ["fortmax120", "jmokut", "madlogic", "just_josh", "inheritag", "lordvidex"] # you can extend the list as much as you want
 
