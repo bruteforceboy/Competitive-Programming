@@ -16,6 +16,8 @@ void __f(const char* names, Arg1&& arg1, Args&&... args) {
   __f(comma + 1, args...);
 }
 
+#define FOR(i, n) for (int i = 0; i < n; ++i)
+
 typedef long long ll;
 typedef long double ld;
 
@@ -28,6 +30,6 @@ const int MOD = 1000000007; // 998244353
 signed main() {
    ios::sync_with_stdio(false);
    cin.tie(nullptr);
-    
+   
    return 0;
 }
